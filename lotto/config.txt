@@ -1,0 +1,4 @@
+[default]
+url = https://bet.szerencsejatek.hu/cmsfiles/eurojackpot.csv
+xls_output = eurojackpot.xlsx
+csv_file_name = data.csv
