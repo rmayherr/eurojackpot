@@ -7,6 +7,7 @@ import numpy as np
 import random
 import warnings
 
+
 class MyAnalysis():
     """
     Engine for calculate the best numbers
@@ -21,9 +22,9 @@ class MyAnalysis():
     def process_input(self):
         """Read csv file"""
         # read data.csv file, select last 7 columns
-        self.df = pd.read_csv(downloader.get_from_config('csv_file_name'), \
-                              delimiter=";", \
-                              usecols=[27, 28, 29, 30, 31, 32, 33], \
+        self.df = pd.read_csv(downloader.get_from_config('csv_file_name'),
+                              delimiter=";",
+                              usecols=[27, 28, 29, 30, 31, 32, 33],
                               names=['N1', 'N2', 'N3', 'N4', 'N5', 'E1', 'E2'])
 
     def split_extra_numbers(self):
@@ -45,21 +46,23 @@ class MyAnalysis():
         def odd_even_func(row):
             return "".join(str(row[0] % 2) + str(row[1] % 2))
 
-        self.df_extra['Odd(1) Even(0)'] = self.df_extra.apply(odd_even_func, axis=1)
+        self.df_extra['Odd(1) Even(0)'] = self.df_extra
+                                                    .apply(odd_even_func, axis=1)
         # Put the statistics of how many Odd and Even number pair drawn, Series
         stat_odd_even_extra = self.df_extra.groupby('Odd(1) Even(0)') \
             .size().sort_values(ascending=False)\
             .to_frame(name="Odd(1) Even(0) statistic")
         # summarize of occurence of odd-even pairs
+
         def sort_values_func(row):
             return "".join(sorted([*row]))
 
         # sort strings like "01011" in rows then count them
-        occurence_odd_even_extra = self.df_extra['Odd(1) Even(0)'] \
-                                    .apply(sort_values_func) \
-                                    .to_frame().groupby('Odd(1) Even(0)') \
-                                    .size()\
-                                    .to_frame(name="Odd(1) Even(0) occurence")
+        occurence_odd_even_extra = self.df_extra['Odd(1) Even(0)'] 
+                                            .apply(sort_values_func) 
+                                            .to_frame().groupby('Odd(1) Even(0)') 
+                                            .size()
+                                            .to_frame(name="Odd(1) Even(0) occurence")
         return stat_odd_even_extra, occurence_odd_even_extra
 
 
