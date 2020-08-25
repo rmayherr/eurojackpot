@@ -35,10 +35,8 @@ def main():
                   f"file couldn't be found.")
     elapsed_time_seconds, elapsed_time_mseconds =\
         (dt.now() - start_time).seconds, (dt.now() - start_time).microseconds
-    print(f'Program executed within '
-          f'{" ".join([str(elapsed_time_seconds), "seconds"])\
-            if elapsed_time_seconds != 0 else\
-            " ".join([str(elapsed_time_mseconds / 100), "miliseconds"])}.')
+    print('Program executed within',
+          f'{" ".join([str(elapsed_time_seconds), "seconds"]) if elapsed_time_seconds != 0 else " ".join([str(elapsed_time_mseconds / 100), "miliseconds"])}.')
 
 
 if __name__ == '__main__':
