@@ -36,7 +36,6 @@ class MyAnalysis():
         # Sum by rows for extra numbers
         self.df_extra['Sum of rows'] = self.df_extra.sum(axis=1)
 
-
     def odd_even_calculation_extra(self):
         """
         Calculate Odd/Even numbers by every single draw
@@ -46,8 +45,8 @@ class MyAnalysis():
         def odd_even_func(row):
             return "".join(str(row[0] % 2) + str(row[1] % 2))
 
-        self.df_extra['Odd(1) Even(0)'] = self.df_extra
-                                                    .apply(odd_even_func, axis=1)
+        self.df_extra['Odd(1) Even(0)'] = self.df_extra.apply(odd_even_func,
+                                                              axis=1)
         # Put the statistics of how many Odd and Even number pair drawn, Series
         stat_odd_even_extra = self.df_extra.groupby('Odd(1) Even(0)') \
             .size().sort_values(ascending=False)\
@@ -58,13 +57,13 @@ class MyAnalysis():
             return "".join(sorted([*row]))
 
         # sort strings like "01011" in rows then count them
-        occurence_odd_even_extra = self.df_extra['Odd(1) Even(0)'] 
-                                            .apply(sort_values_func) 
-                                            .to_frame().groupby('Odd(1) Even(0)') 
-                                            .size()
-                                            .to_frame(name="Odd(1) Even(0) occurence")
+        occurence_odd_even_extra = \
+            self.df_extra['Odd(1) Even(0)']\
+            .apply(sort_values_func)\
+            .to_frame().groupby('Odd(1) Even(0)')\
+            .size()\
+            .to_frame(name="Odd(1) Even(0) occurence")
         return stat_odd_even_extra, occurence_odd_even_extra
-
 
     def high_low_calculation_extra(self):
         """
@@ -81,23 +80,20 @@ class MyAnalysis():
                     whigh += 1
             return whigh, wlow
 
-
-        #Convert tuple to string
+# Convert tuple to string
         def format_column(row):
             return ",".join([str(row[0]), str(row[1])])
 
         # Create new column and put how many high-low numbers are by drawn
         self.df_extra['High-Low numbers'] = \
             self.df_extra.iloc[:, :2].apply(high_low_calc_func, axis=1)
-        #self.df_extra['High-Low numbers'] = \
-            #self.df_extra['High-Low numbers'].apply(format_column)
-
+# self.df_extra['High-Low numbers'] = \
+# self.df_extra['High-Low numbers'].apply(format_column)
 
     def sum_calculation_extra(self):
         """Sum numbers, create new column"""
         # Sum E1 and E2 by rows
         self.df_extra['Sum of rows'] = self.df_extra.iloc[:, :2].sum(axis=1)
-
 
     def print_best_template_extra(self):
         """
@@ -105,7 +101,7 @@ class MyAnalysis():
         :return: dataframe
         """
         extra_numbers = \
-            pd.DataFrame([i for i in combinations(range(1, 11), 2)], \
+            pd.DataFrame([i for i in combinations(range(1, 11), 2)],
                          columns=['E1', 'E2'])
         mask1 = extra_numbers['E1'] % 2 != 0
         mask2 = extra_numbers['E2'] % 2 == 0
@@ -113,9 +109,8 @@ class MyAnalysis():
 
     # Odd-Even calculation by rows (in the original order)
     def odd_even_func(self, row):
-        return "".join(str(row[0] % 2) + str(row[1] % 2) + \
-                        str(row[2] % 2) + str(row[3] % 2) + str(row[4] % 2))
-
+        return "".join(str(row[0] % 2) + str(row[1] % 2) +
+                       str(row[2] % 2) + str(row[3] % 2) + str(row[4] % 2))
 
     # summarize of occurence of odd-even pairs and sort them
     def sort_values_func(self, row):
@@ -141,14 +136,12 @@ class MyAnalysis():
         10111    12
         10001    12
         """
-
-
         # sort strings like "01011" in rows then count them
         occurence_odd_even = self.df['Odd(1) Even(0)'] \
-                                    .apply(self.sort_values_func) \
-                                    .to_frame().groupby('Odd(1) Even(0)') \
-                                    .size()\
-                                    .to_frame(name="Odd(1) Even(0) occurence")
+            .apply(self.sort_values_func) \
+            .to_frame().groupby('Odd(1) Even(0)') \
+            .size()\
+            .to_frame(name="Odd(1) Even(0) occurence")
         """
         Odd(1) Even(0)
         00000      9
@@ -160,7 +153,6 @@ class MyAnalysis():
         """
         return stat_odd_even, occurence_odd_even
 
-
     def high_low_calc_func(self, row):
         whigh, wlow = 0, 0
         for i in range(len(row)):
@@ -169,12 +161,10 @@ class MyAnalysis():
             else:
                 whigh += 1
         return whigh, wlow
+    # Convert tuple to string
 
-
-    #Convert tuple to string
     def format_column(self, row):
         return ",".join([str(row[0]), str(row[1])])
-
 
     def high_low_calculation(self):
         """
@@ -186,14 +176,13 @@ class MyAnalysis():
         self.df['High-Low numbers'] = \
             self.df['High-Low numbers'].apply(self.format_column)
         return self.df.groupby('High-Low numbers').size()\
-                                    .sort_values(ascending=False) \
-                                    .to_frame(name='High-Low numbers statistic')
+            .sort_values(ascending=False)\
+            .to_frame(name='High-Low numbers statistic')
 
     def sum_calculation(self):
         """Sum numbers, create new column"""
         # Sum by rows
         self.df['Sum of rows'] = self.df.sum(axis=1)
-
 
     def print_best_template(self):
         """
@@ -207,40 +196,37 @@ class MyAnalysis():
         mask5 = (self.df['N5'] >= 40) & (self.df['N5'] <= 50)
         return self.df[mask1 & mask2 & mask3 & mask4 & mask5]
 
-
     def generate_numbers(self):
         df = self.count_drawn_numbers()
-        a, b, c = list(df[:17].index), list(df[17:34].index), \
-                                                        list(df[34:].index)
+        a, b, c = list(df[:17].index), list(df[17:34].index),\
+            list(df[34:].index)
         a = random.sample(a, 5)
         b = random.sample(b, 5)
         c = random.sample(c, 5)
-        df = pd.DataFrame(combinations(a + b + c, 5), \
-                                        columns=['N1', 'N2', 'N3', 'N4', 'N5'])
-        df = pd.DataFrame(np.sort(df.to_numpy(), axis=1), \
+        df = pd.DataFrame(combinations(a + b + c, 5),
+                          columns=['N1', 'N2', 'N3', 'N4', 'N5'])
+        df = pd.DataFrame(np.sort(df.to_numpy(), axis=1),
                           columns=['N1', 'N2', 'N3', 'N4', 'N5'])
         df['High-Low numbers'] = \
-                df.apply(self.high_low_calc_func, axis=1)
+            df.apply(self.high_low_calc_func, axis=1)
         df['High-Low numbers'] = \
-                df['High-Low numbers'].apply(self.format_column)
+            df['High-Low numbers'].apply(self.format_column)
         df['Odd(1) Even(0)'] = df.apply(self.odd_even_func, axis=1)
-        df['Odd(1) Even(0)'] = df['Odd(1) Even(0)'].apply(self.sort_values_func)
+        df['Odd(1) Even(0)'] = \
+            df['Odd(1) Even(0)'].apply(self.sort_values_func)
         df['Sum'] = df.sum(axis=1)
         mask1 = (df['Odd(1) Even(0)'] == '00111')
         mask2 = (df['High-Low numbers'] == '2,3')
         mask3 = (df['High-Low numbers'] == '3,2')
         mask4 = (df['Sum'] < 130)
         mask5 = (df['Sum'] > 118)
-        df2 =  df[mask1 & mask4 & mask5]
+        df2 = df[mask1 & mask4 & mask5]
         return df2[mask2 | mask3]
 
-
     def count_drawn_numbers(self):
-        return pd.DataFrame(dict({'A' : list(self.df['N1']) +
-                                list(self.df['N2']) + list(self.df['N3']) + \
-                                list(self.df['N4']) + list(self.df['N5'])})) \
-                                ['A'].value_counts()\
-                                    .to_frame(name='Occurences of numbers')
-
-
+        return pd.DataFrame(dict({'A': list(self.df['N1']) +
+                            list(self.df['N2']) + list(self.df['N3']) +
+                            list(self.df['N4']) +
+                            list(self.df['N5'])}))['A'].value_counts()\
+                            .to_frame(name='Occurences of numbers')
 # print(df.iloc[:,:5])
