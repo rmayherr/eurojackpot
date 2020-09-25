@@ -18,9 +18,10 @@ def download(url):
     try:
         """Send a get request"""
         r = requests.get(url, allow_redirects=True, timeout=10)
+        a = r.headers['Last-Modified'][5:16]
         try:
-            """Download the header and see when the csv file was modified"""
-            if os.path.exists(get_from_config('csv_file_name')) and \
+            """Download the header and see whether the csv file was modified"""
+            if os.path.exists(get_from_config('csv_file_name')) and not \
                 r.headers['Last-Modified'][5:16] >= \
                     datetime.fromtimestamp(
                         os.stat(get_from_config('csv_file_name'))
