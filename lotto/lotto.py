@@ -3,11 +3,12 @@ import downloader
 import analysis
 from output_writer import write_to_xls_file as wxls
 from datetime import datetime as dt
+import time
 
 
 def main():
     """Main function"""
-    start_time = dt.now()
+    start_time = time.perf_counter()
     if downloader.download(downloader.get_from_config('url')) == 0:
         if os.path.exists(downloader.get_from_config('csv_file_name')):
             print(f'Analysing data...', end='')
@@ -33,13 +34,11 @@ def main():
         else:
             print(f"Error!{downloader.get_from_config('csv_file_name')} "
                   f"file couldn't be found.")
-    elapsed_time_seconds, elapsed_time_mseconds =\
-        (dt.now() - start_time).seconds, (dt.now() - start_time).microseconds
-    if elapsed_time_seconds == 0:
-        print('Program executed within',
-              str(elapsed_time_mseconds / 100), 'ms')
+    end_time = time.perf_counter() - start_time
+    if str(end_time)[0] == '0':
+        print(f'Executed in {(end_time * 100):.3f} ms')
     else:
-        print('Program executed within', str(elapsed_time_seconds), 's')
+        print(f'Executed in {end_time:.3f} s')
 
 
 if __name__ == '__main__':
